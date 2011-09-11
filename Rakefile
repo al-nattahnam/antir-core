@@ -14,11 +14,11 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "core"
-  gem.homepage = "http://github.com/krakatoa/core"
+  gem.name = "antir-core"
+  gem.homepage = "http://github.com/krakatoa/antir-core"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{AntirCore gem}
+  gem.description = %Q{AntirCore gem}
   gem.email = "krakatoa1987@gmail.com"
   gem.authors = ["Fernando Alonso"]
   # dependencies defined in Gemfile
