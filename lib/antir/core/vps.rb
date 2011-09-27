@@ -1,7 +1,7 @@
 require 'state_machine'
 
 module Antir
-  module Core
+  class Core
     class VPS
       state_machine :state, :initial => :pending do
         before_transition :pending => :waiting do
