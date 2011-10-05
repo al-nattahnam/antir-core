@@ -1,3 +1,4 @@
+#require 'rubygems'
 require 'dm-migrations'
 require 'dm-core'
 require 'dm-types'
