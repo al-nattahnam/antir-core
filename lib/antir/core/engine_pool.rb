@@ -6,7 +6,7 @@ module Antir
 
       property :id, Serial
       has n, :engines
-      has n, :cores#, :through => Resource
+      has n, :cores, :through => Resource
       
       #after :save do |engine_pool|
       # engine_pool.cores.each do |core|
