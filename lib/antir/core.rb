@@ -1,6 +1,3 @@
-require 'antir/core/engine'
-require 'antir/core/engine_pool'
-
 module Antir
   class Core
     include DataMapper::Resource
@@ -13,5 +10,3 @@ module Antir
     has n, :engines, :through => :engine_pools
   end
 end
-
-require 'antir/core/vps'
