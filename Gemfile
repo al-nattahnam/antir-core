@@ -6,6 +6,7 @@ source "http://rubygems.org"
 #gem "bson_ext", ">= 1.3.1"
 gem "zmq", ">= 2.1.4"
 gem "antir-resource", "0.1.1"
+gem "json", "1.4.6"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

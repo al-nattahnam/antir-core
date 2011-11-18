@@ -51,6 +51,7 @@ DEPENDENCIES
   antir-resource (= 0.1.1)
   bundler (~> 1.0.0)
   jeweler (~> 1.6.4)
+  json (= 1.4.6)
   rcov
   shoulda
   zmq (>= 2.1.4)
