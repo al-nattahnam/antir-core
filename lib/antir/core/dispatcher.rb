@@ -24,6 +24,8 @@ module Antir
           end
         
           @driver = ctx.bind(ZMQ::PULL, "tcp://#{Antir::Core.address}:3340", DriverHandler.new)
+
+          ctx.bind(ZMQ::PULL, "tcp://127.0.0.1:5556", InnerHandler.new)
         
           @engine_events = ctx.bind(ZMQ::PULL, "tcp://#{Antir::Core.address}:3341", EngineHandler.new)
         
@@ -58,14 +60,24 @@ module Antir
 
                   ## Implementar una capa intermedia con Beanstalkd que se ocupe de enviar los mensajes al Engine,
                   ## esto bloquea la comunicacion Driver <-> Core
-                  @engines.send_string(serialized)
-                  puts @engines.recv_string
-                  ##
+                  resp = Antir::Core::WorkerPool.push serialized
+                  puts resp
+                  #@engines.send_string(serialized)
+                  #puts @engines.recv_string
+                  # TODO mover funcionalidad al worker ##
 
                 end
               end
-              #m.send_msg('ok')
+              socket.send_msg('ok!')
             end
+          end
+        end
+      end
+
+      class InnerHandler
+        def on_readable(socket, messages)
+          messages.each do |m|
+            puts m.copy_out_string
           end
         end
       end

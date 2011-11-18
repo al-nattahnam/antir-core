@@ -5,8 +5,20 @@ module Antir
     attr_reader :address
     include Singleton
 
-    def initialize
-      @address = "127.0.0.1" # '10.40.1.107'
+    def initialize(config_path)
+      @config_path = config_path
+      load_config
+    end
+
+    def load_config
+      config = YAML.load_file(@config_path)
+      begin
+        @address = config['core']['host']
+        # @region = Antir::Resource::EnginePool.find_by_region(config['core']['region'])
+        @worker_ports = config['core']['worker_ports']
+      rescue
+        throw "Core could not be initialized! Config is missing"
+      end
     end
 
     def start
@@ -21,3 +33,4 @@ module Antir
 end
 
 require 'antir/core/dispatcher'
+require 'antir/core/worker'

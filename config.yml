@@ -1,0 +1,5 @@
+core:
+  host: 10.0.0.4
+  region: 1
+  worker_ports:
+    - 11300
