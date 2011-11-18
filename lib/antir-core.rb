@@ -1,5 +1,2 @@
 require 'antir-resource'
-require 'antir/engine'
-require 'antir/engine_pool'
 require 'antir/core'
-require 'antir/vps'
