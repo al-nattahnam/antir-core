@@ -1,12 +1,14 @@
+require 'singleton'
+
 module Antir
   class Core
-    include DataMapper::Resource
-    storage_names[:default] = 'cores'
+    include Singleton
 
-    property :id, Serial
-    property :address, URI
-
-    has n, :engine_pools, :through => Resource
-    has n, :engines, :through => :engine_pools
+    def start
+      @dispatcher = Antir::Core::Dispatcher.instance
+      @dispatcher.start
+    end
   end
 end
+
+require 'antir/core/dispatcher'
