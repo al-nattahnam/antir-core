@@ -5,13 +5,8 @@ module Antir
     attr_reader :address
     include Singleton
 
-    def initialize(config_path)
-      @config_path = config_path
-      load_config
-    end
-
-    def load_config
-      config = YAML.load_file(@config_path)
+    def load_config(config_path)
+      config = YAML.load_file(config_path)
       begin
         @address = config['core']['host']
         # @region = Antir::Resource::EnginePool.find_by_region(config['core']['region'])
