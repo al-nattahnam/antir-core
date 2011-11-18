@@ -11,7 +11,7 @@ module Antir
       def initialize(worker_ports=[])
         @workers = []
         worker_ports.each do |port|
-          @workers << Antir::Engine::Worker.new('127.0.0.1', port)
+          @workers << Antir::Core::Worker.new('127.0.0.1', port)
         end
 
         @beanstalk = Beanstalk::Pool.new(worker_ports.collect{|port| "127.0.0.1:#{port}" })
