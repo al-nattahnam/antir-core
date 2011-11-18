@@ -2,8 +2,6 @@ require 'singleton'
 require 'em-zeromq'
 require 'json'
 
-CORE_IP = '127.0.0.1' # '10.40.1.107'
-
 module Antir
   class Core
     class Dispatcher
@@ -25,9 +23,9 @@ module Antir
             @engines = ctx.connect(ZMQ::REQ, "tcp://#{address}:5555")
           end
         
-          @driver = ctx.bind(ZMQ::REP, "tcp://#{CORE_IP}:3340", DriverHandler.new)
+          @driver = ctx.bind(ZMQ::PULL, "tcp://#{Antir::Core.address}:3340", DriverHandler.new)
         
-          @engine_events = ctx.bind(ZMQ::PULL, "tcp://#{CORE_IP}:3341", EngineHandler.new)
+          @engine_events = ctx.bind(ZMQ::PULL, "tcp://#{Antir::Core.address}:3341", EngineHandler.new)
         
           n = 0
         end
