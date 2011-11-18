@@ -18,6 +18,11 @@ module Antir
 
     def start
       @dispatcher = Antir::Core::Dispatcher.instance
+      @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
+
+      @worker_pool.workers.each do |worker|
+        worker.start
+      end
       @dispatcher.start
     end
 
