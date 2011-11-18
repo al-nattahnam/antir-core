@@ -60,8 +60,8 @@ module Antir
 
                   ## Implementar una capa intermedia con Beanstalkd que se ocupe de enviar los mensajes al Engine,
                   ## esto bloquea la comunicacion Driver <-> Core
+                  puts serialized
                   resp = Antir::Core::WorkerPool.push serialized
-                  puts resp
                   #@engines.send_string(serialized)
                   #puts @engines.recv_string
                   # TODO mover funcionalidad al worker ##
