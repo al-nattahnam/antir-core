@@ -23,12 +23,12 @@ module Antir
     end
 
     def @@local.worker_ports=(worker_ports)
-      return false if not @@local
+      #return false if not @@local
       @worker_ports = worker_ports
     end
 
     def @@local.start
-      return false if not @@local
+      #return false if not @@local
       @dispatcher = Antir::Core::Dispatcher.instance
       @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
 
