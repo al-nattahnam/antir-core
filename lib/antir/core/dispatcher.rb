@@ -13,13 +13,11 @@ module Antir
         @driver = nil
       end
 
-      def core
-        Antir::Core.local
-      end
-
       def start
         EM.run do
           ctx = EM::ZeroMQ::Context.new(1)
+
+          core = Antir::Core.local
         
           engines = core.engine_pools.engines.collect{|e| e.address.to_s}
           engines.each do |address|
@@ -47,7 +45,7 @@ module Antir
           
               # Puede recibir un mensaje de Refresh
               if msg['code'] == '00'
-                engines = core.engine_pools.engines.collect{|e| e.address.to_s}
+                engines = Antir::Core.local.engine_pools.engines.collect{|e| e.address.to_s}
                 ctx = ZMQ::Context.new
                 @engines = ctx.socket ZMQ::REQ
                 engines.each do |address|
@@ -63,7 +61,7 @@ module Antir
                   ## Implementar una capa intermedia con Beanstalkd que se ocupe de enviar los mensajes al Engine,
                   ## esto bloquea la comunicacion Driver <-> Core
                   puts serialized
-                  resp = core.worker_pool.push serialized
+                  resp = Antir::Core.local.worker_pool.push serialized
                   #@engines.send_string(serialized)
                   #puts @engines.recv_string
                   # TODO mover funcionalidad al worker ##
