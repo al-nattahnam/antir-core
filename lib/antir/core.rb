@@ -6,6 +6,11 @@ module Antir
     #include Singleton
 
     @@local = Antir::Resources::Core.first
+    class << @@local
+      def test
+        puts 'test!'
+      end
+    end
     def @@local.load_config(config_path)
       config = YAML.load_file(config_path)
       begin
