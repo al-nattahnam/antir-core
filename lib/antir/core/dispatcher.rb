@@ -19,6 +19,7 @@ module Antir
 
       def start
         EM.run do
+          puts core.address
           ctx = EM::ZeroMQ::Context.new(1)
         
           engines = core.engine_pools.engines.collect{|e| e.address.to_s}
