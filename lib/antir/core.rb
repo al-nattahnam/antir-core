@@ -5,12 +5,12 @@ module Antir
     #attr_reader :address
     #include Singleton
 
-    @@local = Antir::Resources::Core.first
-    class << @@local
-      def test
-        puts 'test!'
-      end
+    def self.local.load_config(config_path)
+      puts 'bla!'
     end
+
+    @@local = Antir::Resources::Core.first
+
     def @@local.load_config(config_path)
       config = YAML.load_file(config_path)
       begin
