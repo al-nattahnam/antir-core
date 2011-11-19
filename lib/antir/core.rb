@@ -16,18 +16,19 @@ module Antir
         @@local = Antir::Resources::Core.first(:address => config['core']['host'])
         #@address = config['core']['host']
         # @region = Antir::Resource::EnginePool.find_by_region(config['core']['region'])
-        @@local.worker_ports = config['core']['worker_ports']
+        #@@local.worker_ports = config['core']['worker_ports']
       rescue
         throw "Core could not be initialized! Config is missing"
       end
     end
 
     def @@local.worker_ports=(worker_ports)
+      return false if not @@local
       @worker_ports = worker_ports
     end
 
     def @@local.start
-      return false if @@local.empty?
+      return false if not @@local
       @dispatcher = Antir::Core::Dispatcher.instance
       @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
 
