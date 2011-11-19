@@ -24,14 +24,14 @@ module Antir
           @dispatcher = Antir::Core::Dispatcher.instance
           @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
 
+          puts @dispatcher.inspect
+          puts @worker_pool.inspect
+
           @worker_pool.workers.each do |worker|
+            puts worker.inspect
             worker.start
           end
           @dispatcher.start
-        end
-
-        def @@local.dispatcher
-          @dispatcher
         end
       rescue
         throw "Core could not be initialized! Config is missing"
