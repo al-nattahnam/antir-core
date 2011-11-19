@@ -13,21 +13,24 @@ module Antir
         @driver = nil
       end
 
+      def core
+        Antir::Core.local
+      end
+
       def start
         EM.run do
           ctx = EM::ZeroMQ::Context.new(1)
         
-          c = Antir::Resources::Core.first
-          engines = c.engine_pools.engines.collect{|e| e.address.to_s}
+          engines = core.engine_pools.engines.collect{|e| e.address.to_s}
           engines.each do |address|
             @engines = ctx.connect(ZMQ::REQ, "tcp://#{address}:5555")
           end
         
-          @driver = ctx.bind(ZMQ::PULL, "tcp://#{Antir::Core.address}:3340", DriverHandler.new)
+          @driver = ctx.bind(ZMQ::PULL, "tcp://#{core.address}:3340", DriverHandler.new)
 
           ctx.bind(ZMQ::PULL, "tcp://127.0.0.1:5556", InnerHandler.new)
         
-          @engine_events = ctx.bind(ZMQ::PULL, "tcp://#{Antir::Core.address}:3341", EngineHandler.new)
+          @engine_events = ctx.bind(ZMQ::PULL, "tcp://#{core.address}:3341", EngineHandler.new)
         
           n = 0
         end
@@ -44,8 +47,7 @@ module Antir
           
               # Puede recibir un mensaje de Refresh
               if msg['code'] == '00'
-                c = Antir::Resources::Core.first
-                engines = c.engine_pools.engines.collect{|e| e.address.to_s}
+                engines = core.engine_pools.engines.collect{|e| e.address.to_s}
                 ctx = ZMQ::Context.new
                 @engines = ctx.socket ZMQ::REQ
                 engines.each do |address|
