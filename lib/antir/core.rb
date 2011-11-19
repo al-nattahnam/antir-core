@@ -1,9 +1,5 @@
-#require 'singleton'
-
 module Antir
   class Core < Antir::Resources::Core
-    #attr_reader :address
-    #include Singleton
 
     @@local = nil
 
@@ -14,8 +10,7 @@ module Antir
       config = YAML.load_file(config_path)
       begin
         @@local = Antir::Resources::Core.first(:address => config['core']['host'])
-        #@address = config['core']['host']
-        # @region = Antir::Resource::EnginePool.find_by_region(config['core']['region'])
+
         def @@local.worker_ports=(worker_ports)
           @worker_ports = worker_ports
         end
@@ -35,6 +30,10 @@ module Antir
           @dispatcher.start
         end
 
+        def @@local.workers
+          @worker_pool
+        end
+
       rescue
         throw "Core could not be initialized! Config is missing"
       end
@@ -43,10 +42,6 @@ module Antir
     def self.local
       @@local
     end
-
-    #def self.method_missing(name, *args)
-    #  instance.send(name, *args)
-    #end
   end
 end
 
