@@ -1,11 +1,12 @@
-require 'singleton'
+#require 'singleton'
 
 module Antir
-  class Core
-    attr_reader :address
-    include Singleton
+  class Core < Antir::Resources::Core
+    #attr_reader :address
+    #include Singleton
 
-    def load_config(config_path)
+    @@local = Antir::Resources::Core.first
+    def @@local.load_config(config_path)
       config = YAML.load_file(config_path)
       begin
         @address = config['core']['host']
@@ -16,7 +17,7 @@ module Antir
       end
     end
 
-    def start
+    def @@local.start
       @dispatcher = Antir::Core::Dispatcher.instance
       @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
 
@@ -26,9 +27,13 @@ module Antir
       @dispatcher.start
     end
 
-    def self.method_missing(name, *args)
-      instance.send(name, *args)
+    def self.local
+      @@local
     end
+
+    #def self.method_missing(name, *args)
+    #  instance.send(name, *args)
+    #end
   end
 end
 
