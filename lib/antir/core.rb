@@ -21,6 +21,10 @@ module Antir
         end
         @@local.worker_ports = config['core']['worker_ports']
 
+        def @@local.worker_ports
+          @worker_ports
+        end
+
         def @@local.start
           @dispatcher = Antir::Core::Dispatcher.instance
           @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
