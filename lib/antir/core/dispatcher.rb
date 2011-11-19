@@ -19,7 +19,6 @@ module Antir
 
       def start
         EM.run do
-          puts core.address
           ctx = EM::ZeroMQ::Context.new(1)
         
           engines = core.engine_pools.engines.collect{|e| e.address.to_s}
@@ -56,7 +55,7 @@ module Antir
                 end
               end
           
-              if msg['resource'] == 'vps' and @engines
+              if msg['resource'] == 'vps' #and @engines
               #if msg['code'] == '01' and @@engines
                 if msg['action'] == 'create'
                   serialized = msg.to_json
