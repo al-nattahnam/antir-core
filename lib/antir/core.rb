@@ -5,24 +5,29 @@ module Antir
     #attr_reader :address
     #include Singleton
 
-    def self.local.load_config(config_path)
-      puts 'bla!'
-    end
+    @@local = nil
 
-    @@local = Antir::Resources::Core.first
+    # Antir::Core.load_config('.yml')
+    # Antir::Core.local.start
 
-    def @@local.load_config(config_path)
+    def self.load_config(config_path)
       config = YAML.load_file(config_path)
       begin
-        @address = config['core']['host']
+        @@local = Antir::Resources::Core.first(:address => config['core']['host'])
+        #@address = config['core']['host']
         # @region = Antir::Resource::EnginePool.find_by_region(config['core']['region'])
-        @worker_ports = config['core']['worker_ports']
+        @@local.worker_ports = config['core']['worker_ports']
       rescue
         throw "Core could not be initialized! Config is missing"
       end
     end
 
+    def @@local.worker_ports=(worker_ports)
+      @worker_ports = worker_ports
+    end
+
     def @@local.start
+      return false if @@local.empty?
       @dispatcher = Antir::Core::Dispatcher.instance
       @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
 
