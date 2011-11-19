@@ -30,10 +30,9 @@ module Antir
           @dispatcher.start
         end
 
-        def @@local.workers
-          @worker_pool
+        def @@local.dispatcher
+          @dispatcher
         end
-
       rescue
         throw "Core could not be initialized! Config is missing"
       end
