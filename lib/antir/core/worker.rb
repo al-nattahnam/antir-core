@@ -52,6 +52,7 @@ module Antir
 
               #self.send(job.ybody['action'], job.ybody)
               puts "processed: #{job.id} - #{job.ybody}"
+              puts Antir::Core.local.inspect
               @report.send_string('ok')
 
               # transaction begin

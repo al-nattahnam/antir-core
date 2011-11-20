@@ -58,9 +58,6 @@ module Antir
                 if msg['action'] == 'create'
                   serialized = msg.to_json
 
-                  ## Implementar una capa intermedia con Beanstalkd que se ocupe de enviar los mensajes al Engine,
-                  ## esto bloquea la comunicacion Driver <-> Core
-                  puts serialized
                   resp = Antir::Core.local.worker_pool.push serialized
                   #@engines.send_string(serialized)
                   #puts @engines.recv_string
