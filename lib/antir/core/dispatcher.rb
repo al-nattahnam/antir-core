@@ -26,7 +26,7 @@ module Antir
         
           @driver = ctx.bind(ZMQ::PULL, "tcp://#{core.address}:3340", DriverHandler.new)
 
-          ctx.bind(ZMQ::PULL, "tcp://127.0.0.1:5556", InnerHandler.new)
+          ctx.bind(ZMQ::PULL, "ipc://127.0.0.1:5556", InnerHandler.new)
         
           @engine_events = ctx.bind(ZMQ::PULL, "tcp://#{core.address}:3341", EngineHandler.new)
         

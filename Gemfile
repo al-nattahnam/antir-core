@@ -7,6 +7,7 @@ source "http://rubygems.org"
 gem "zmq", ">= 2.1.4"
 gem "antir-resource", "0.1.1"
 gem "json", "1.4.6"
+gem "cucub-object", "0.0.1"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
