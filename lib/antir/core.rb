@@ -1,52 +1,42 @@
 require 'singleton'
 
+CONFIG_PATH = "/opt/core.yml"
+
 module Antir
   class Core #< Antir::Resources::Core
     include Singleton
     include Cucub::LiveObject
+    
+    live :channel, :reply
 
-    @@local = nil
+    def initialize
+      load_config
+    end
 
-    # Antir::Core.load_config('.yml')
-    # Antir::Core.local.start
-
-    def self.load_config(config_path)
-      config = YAML.load_file(config_path)
+    def load_config
+      config = YAML.load_file(CONFIG_PATH)
       begin
-        @@local = Antir::Resources::Core.first(:address => config['core']['host'])
+        local = Antir::Resources::Core.first(:address => config['core']['host'])
 
-        def @@local.worker_ports=(worker_ports)
-          @worker_ports = worker_ports
-        end
-        @@local.worker_ports = config['core']['worker_ports']
+        @engines_proxy = Cucub::LiveProxy.new
+        @engines_proxy.channel = :request
+        @engines_proxy.oid = 2
+        @engines_proxy.balanced = :round_robin
+        @engines_proxy.hosts = local.engine_pools.engines.collect { |engine| engine.address.to_s  }
 
-        def @@local.worker_ports
-          @worker_ports
-        end
-
-        def @@local.start
-          @dispatcher = Antir::Core::Dispatcher.instance
-          @worker_pool = Antir::Core::WorkerPool.new(@worker_ports)
-
-          @worker_pool.workers.each do |worker|
-            worker.start
-          end
-          @dispatcher.start
-        end
-
-        def @@local.worker_pool
-          @worker_pool
-        end
+        # @worker_ports = config['core']['worker_ports']
+        @address = config['core']['host']
       rescue
         throw "Core could not be initialized! Config is missing"
       end
     end
 
-    def self.local
-      @@local
+    def vps_create
+      @engines_proxy.call('vps_create')
+    end
+
+    def start!
+      Cucub.start!(@address)
     end
   end
 end
-
-require 'antir/core/dispatcher'
-require 'antir/core/worker'
