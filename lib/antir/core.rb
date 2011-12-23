@@ -1,5 +1,9 @@
+require 'singleton'
+
 module Antir
-  class Core < Antir::Resources::Core
+  class Core #< Antir::Resources::Core
+    include Singleton
+    include Cucub::LiveObject
 
     @@local = nil
 
