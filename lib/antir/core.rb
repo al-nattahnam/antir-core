@@ -22,7 +22,11 @@ module Antir
         @engines_proxy.channel = :request
         @engines_proxy.oid = 2
         @engines_proxy.balanced = :round_robin
-        @engines_proxy.hosts = local.engine_pools.engines.collect { |engine| engine.address.to_s  }
+
+        local_engines = local.engine_pools.engines
+        if local_engines.size > 0
+          @engines_proxy.connect(local_engines.collect { |engine| engine.address.to_s  })
+        end
 
         # @worker_ports = config['core']['worker_ports']
         @address = config['core']['host']
@@ -32,7 +36,15 @@ module Antir
     end
 
     def vps_create
-      @engines_proxy.call('vps_create')
+      @engines_proxy.call('vps_create', {:code => 111})
+    end
+
+    def engine_register(address)
+      #@engines_proxy.engaged
+      @engines_proxy.connect(address)
+    end
+
+    def refresh
     end
 
     def start!
